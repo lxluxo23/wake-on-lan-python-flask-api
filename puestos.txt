@@ -1,0 +1,9 @@
+B0:6E:BF:0B:1B:0E puesto 1
+34:97:F6:85:38:EA puesto 2
+C0:3F:D5:AD:93:B8 puesto 3 
+2C:F0:5D:EA:BE:A1 puesto 4
+04:D9:F5:32:93:EF puesto 5
+10:78:D2:36:D0:21 puesto 6
+78:24:AF:3E:2C:31 puesto 7
+D8:5E:D3:02:4D:EB puesto 8
+2C:F0:5D:6D:3A:4A puesto 9

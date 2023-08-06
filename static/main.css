@@ -1,0 +1,8 @@
+.title{
+    font-family: 'Lobster', cursive;
+}
+body{
+background: #009FFF;
+background: -webkit-linear-gradient(to right, #ec2F4B, #009FFF);  
+background: linear-gradient(to right, #ec2F4B, #009FFF); 
+}

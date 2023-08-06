@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+wakeonlan = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-bcrypt = "*"
+flask-cors = "*"
+pyping = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
