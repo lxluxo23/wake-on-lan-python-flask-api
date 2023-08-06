@@ -74,17 +74,27 @@ class User(db.Model):
 @app.route('/')
 def home():
     equipos = Equipo.query.all()
+    resultados = []
     for equipo in equipos:
         direccion_ip = obtenerPorMac(equipo.mac_address)
         if direccion_ip:
-            print(f"{bcolors.OKCYAN}La dirección IP del dispositivo con dirección MAC {equipo.mac_address} es: {direccion_ip} {bcolors.ENDC}")
-            if (ping(direccion_ip)):
-                print(f"{bcolors.WARNING}{direccion_ip} {bcolors.OKGREEN} se encuentra prendido {bcolors.ENDC}" )
-            else:
-                print(f"{bcolors.HEADER}{bcolors.WARNING}{direccion_ip}{bcolors.FAIL} se encuentra apagado {bcolors.ENDC}")
+            estado = "Encendido" if ping(direccion_ip) else "Apagado"
+            resultados.append({
+                'id':equipo.id,
+                'nombre': equipo.nombre,
+                'mac_address': equipo.mac_address,
+                'ip_address': direccion_ip,
+                'estado': estado
+            })
         else:
-            print(f"{bcolors.UNDERLINE}{bcolors.FAIL}No se encontró dirección IP para el dispositivo con dirección MAC: {equipo.mac_address}{bcolors.ENDC}")
-    return render_template ('index.html', equipos=equipos)
+            resultados.append({
+                'id':equipo.id,
+                'nombre': equipo.nombre,
+                'mac_address': equipo.mac_address,
+                'ip_address': "No disponible",
+                'estado': "Desconocido"
+            })
+    return render_template ('index.html',resultados=resultados)
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json.get('username')

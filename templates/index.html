@@ -32,15 +32,16 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 my-auto">
                 <ul class="list-group">
-                    {% for equipo in equipos %}
+                    {% for resultado in resultados %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ equipo.nombre }} ({{ equipo.mac_address }})
-                        <a href="/encender/{{equipo.id}}" class="btn btn-success btn-sm"> Encender</a>
+                        {{ resultado.nombre }} ({{ resultado.mac_address }}) - IP: {{ resultado.ip_address }} - Estado: {{ resultado.estado }}
+                        <a href="/encender/{{resultado.id}}" class="btn btn-success btn-sm"> Encender</a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+   
     </main>
 </body>
 
