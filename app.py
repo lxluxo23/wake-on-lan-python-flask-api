@@ -21,8 +21,8 @@ class bcolors:
 app = Flask(__name__)
 app.secret_key = '7689myc'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///equipos.db'
-app.config['DEBUG'] = True
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['DEBUG'] = False
+app.config['SQLALCHEMY_ECHO'] = False
 CORS(app)
 db = SQLAlchemy(app) 
 migrate = Migrate(app, db)
@@ -157,4 +157,4 @@ def encender_equipo(id):
     else:
         return "Equipo no encontrado"
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
