@@ -73,6 +73,8 @@ class User(db.Model):
         }
 @app.route('/')
 def home():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     equipos = Equipo.query.all()
     resultados = []
     for equipo in equipos:
