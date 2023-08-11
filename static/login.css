@@ -1,0 +1,52 @@
+html,
+body {
+  height: 100%;
+}
+body {
+    background: #009FFF;
+    background: -webkit-linear-gradient(to right, #ec2F4B, #009FFF);  
+    background: linear-gradient(to right, #ec2F4B, #009FFF); 
+}
+.login.card {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.nav {
+  justify-content: center;
+}
+.nav .nav-link {
+  border-bottom: 2px solid #fff;
+  color: #333;
+  padding: 0.5rem 0;
+  margin-right: 1rem;
+}
+.nav .nav-link.active {
+  border-bottom: 2px solid orangered;
+  color: orangered;
+}
+
+.register.card {
+  max-width: 480px;
+  margin: 0 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.card .card-img-top {
+  width: 100px;
+  margin: 16px auto 0;
+}
+.alert {
+  margin-top: 10px;
+}
+
+.hide {
+  display: none;
+}

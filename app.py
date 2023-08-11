@@ -95,16 +95,21 @@ def home():
                 'estado': "Desconocido"
             })
     return render_template ('index.html',resultados=resultados)
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    user = User.query.filter_by(username=username).first()
-    if user and bcrypt.check_password_hash(user.password, password):
-        session['user_id'] = user.id  # Iniciar sesión
-        return jsonify({'message': 'Inicio de sesión exitoso'}), 200
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user and bcrypt.check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            return redirect(url_for('home'))
+        else:
+            print(bcolors.FAIL + "incorrectas" + bcolors.ENDC)
+            flash('Credenciales incorrectas', 'danger')
+            return render_template('login.html')
     else:
-        return jsonify({'message': 'Credenciales incorrectas'}), 401
+        return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
 def register():
