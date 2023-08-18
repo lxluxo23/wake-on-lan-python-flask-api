@@ -112,6 +112,11 @@ def login():
             return render_template('login.html')
     else:
         return render_template('login.html')
+    
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['POST'])
 def register():

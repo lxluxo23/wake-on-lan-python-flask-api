@@ -12,6 +12,7 @@ flask-bcrypt = "*"
 flask-cors = "*"
 pyping = "*"
 waitress = "*"
+flask-login = "*"
 
 [dev-packages]
 

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frontend</title>
     <link rel="stylesheet" href="{{ url_for ('static',filename='main.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cosmo/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,14 +30,23 @@
     </script>
     {% endif %}
     {% endwith %}
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3  border-bottom">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/logout" class="nav-link active" aria-current="page">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </header>
+    </div>
     <main class="container p-4">
-        <h1 class="display-4 text-center mt-4 title">Equipos</h1>
+        <h1 class="display-4 text-center mt-0 title">Equipos</h1>
         <div class="row">
             <div class="col-md-8 offset-md-2 my-auto">
                 <ul class="list-group">
                     {% for resultado in resultados %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ resultado.nombre }} ({{ resultado.mac_address }}) - IP: {{ resultado.ip_address }} - Estado: {{ resultado.estado }}
+                        {{ resultado.nombre }} ({{ resultado.mac_address }}) - IP: {{ resultado.ip_address }} - Estado:
+                        {{ resultado.estado }}
                         <a href="/encender/{{resultado.id}}" class="btn btn-success btn-sm"> Encender</a>
                     </li>
                     {% endfor %}
