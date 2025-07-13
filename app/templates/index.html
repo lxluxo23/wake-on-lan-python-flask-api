@@ -33,7 +33,7 @@
     <div class="container">
         <header class="d-flex flex-wrap justify-content-center py-3  border-bottom">
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/logout" class="nav-link active" aria-current="page">Cerrar Sesión</a>
+                <li class="nav-item"><a href="{{ url_for('auth.logout') }}" class="nav-link active" aria-current="page">Cerrar Sesión</a>
                 </li>
             </ul>
         </header>
@@ -47,7 +47,7 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ resultado.nombre }} ({{ resultado.mac_address }}) - IP: {{ resultado.ip_address }} - Estado:
                         {{ resultado.estado }}
-                        <a href="/encender/{{resultado.id}}" class="btn btn-success btn-sm"> Encender</a>
+                        <a href="{{ url_for('main.encender_equipo', id=resultado.id) }}" class="btn btn-success btn-sm"> Encender</a>
                     </li>
                     {% endfor %}
                 </ul>
