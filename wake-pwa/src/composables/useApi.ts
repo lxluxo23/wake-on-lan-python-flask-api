@@ -2,7 +2,9 @@ import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 import { ref, computed } from 'vue'
 import type { ApiResponse } from '@/types'
 
-const API_BASE_URL = 'http://localhost:5000/api'
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://equipos.myccontadores.cl/api'
+  : 'http://localhost:5000/api'
 
 // Estado global de autenticación
 const authToken = ref(localStorage.getItem('auth_token') || '')

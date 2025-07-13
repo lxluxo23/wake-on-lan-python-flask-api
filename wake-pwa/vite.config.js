@@ -52,10 +52,21 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
           {
-            urlPattern: /^http:\/\/localhost:5000\/api\/.*/i,
+            urlPattern: /^https:\/\/equipos\.myccontadores\.cl\/api\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 300
+              }
+            }
+          },
+          {
+            urlPattern: /^http:\/\/localhost:5000\/api\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache-dev',
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 300
