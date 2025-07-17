@@ -9,12 +9,20 @@ import jwt
 import datetime
 from flask import current_app
 
-# Importar excepciones JWT correctas
+# Importar excepciones JWT correctas para PyJWT
 try:
+    # Para PyJWT >= 2.0
     from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 except ImportError:
-    # Fallback para versiones antiguas
-    from jwt import ExpiredSignatureError, InvalidTokenError
+    try:
+        # Para PyJWT < 2.0
+        from jwt import ExpiredSignatureError, InvalidTokenError
+    except ImportError:
+        # Fallback: crear excepciones genéricas
+        class ExpiredSignatureError(Exception):
+            pass
+        class InvalidTokenError(Exception):
+            pass
 
 api = Blueprint('api', __name__, url_prefix='/api')
 bcrypt = Bcrypt()
