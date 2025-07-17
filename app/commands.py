@@ -251,7 +251,7 @@ def setup_system(force):
         from flask_bcrypt import Bcrypt
         bcrypt = Bcrypt(current_app)
         
-        # 1. Configurar usuario admin
+        # 1. Configurar usuario admin (preservar contraseña existente)
         admin = User.query.filter_by(username='admin').first()
         if not admin:
             admin = User(
@@ -263,13 +263,12 @@ def setup_system(force):
             click.echo('✅ Usuario admin creado')
         else:
             admin.role = 'admin'
-            admin.password = bcrypt.generate_password_hash('admin123').decode('utf-8')
-            click.echo('✅ Usuario admin actualizado')
+            # No cambiar la contraseña del admin existente
+            click.echo('✅ Usuario admin configurado (contraseña preservada)')
         
-        # 2. Crear/actualizar usuarios de prueba
+        # 2. Crear/actualizar usuario de prueba
         test_users = [
-            ('palula', 'palula123'),
-            ('luis', 'luis123')
+            ('paula', 'myccontadores')
         ]
         
         created_users = []
@@ -299,12 +298,20 @@ def setup_system(force):
             if equipo not in admin.equipos_asignados:
                 admin.equipos_asignados.append(equipo)
         
-        # Asignar primer equipo a usuarios de prueba
-        if equipos and created_users:
-            for i, user in enumerate(created_users):
-                if i < len(equipos) and equipos[i] not in user.equipos_asignados:
-                    user.equipos_asignados.append(equipos[i])
-                    click.echo(f'🔗 Equipo "{equipos[i].nombre}" asignado a {user.username}')
+        # Asignar equipo específico a paula (puesto 7)
+        if created_users:
+            paula = next((u for u in created_users if u.username == 'paula'), None)
+            if paula:
+                # Buscar el equipo "puesto 7 (paula)" específicamente
+                paula_equipo = Equipo.query.filter(Equipo.nombre.like('%paula%')).first()
+                if paula_equipo and paula_equipo not in paula.equipos_asignados:
+                    paula.equipos_asignados.append(paula_equipo)
+                    click.echo(f'🔗 Equipo "{paula_equipo.nombre}" asignado a paula')
+                elif not paula_equipo:
+                    # Si no encuentra el equipo de paula, asignar el primer equipo disponible
+                    if equipos and equipos[0] not in paula.equipos_asignados:
+                        paula.equipos_asignados.append(equipos[0])
+                        click.echo(f'🔗 Equipo "{equipos[0].nombre}" asignado a paula (por defecto)')
         
         db.session.commit()
         
@@ -345,9 +352,8 @@ def setup_system(force):
     
     click.echo('')
     click.echo('🔐 Credenciales configuradas:')
-    click.echo('   👑 Admin:  admin / admin123')
-    click.echo('   👤 Usuario: palula / palula123')
-    click.echo('   👤 Usuario: luis / luis123')
+    click.echo('   👑 Admin:  admin / [contraseña preservada]')
+    click.echo('   👤 Usuario: paula / myccontadores')
     click.echo('')
     click.echo('🚀 Próximos pasos:')
     click.echo('   1. Iniciar servidor: python run.py')
