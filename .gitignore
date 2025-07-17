@@ -1,2 +1,15 @@
 __pycache__
 .vscode
+
+# Base de datos local
+instance/
+instance/*.db
+instance/*.db.*
+
+# Logs
+logs/
+*.log
+wake_service.log
+
+# Backups automáticos
+*_backup_*.db

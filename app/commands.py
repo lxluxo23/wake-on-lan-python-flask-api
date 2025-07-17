@@ -264,7 +264,7 @@ def setup_system(force):
         else:
             admin.role = 'admin'
             # No cambiar la contraseña del admin existente
-            click.echo('✅ Usuario admin configurado (contraseña preservada)')
+            click.echo('✅ Usuario admin configurado como admin (contraseña preservada)')
         
         # 2. Crear/actualizar usuario de prueba
         test_users = [

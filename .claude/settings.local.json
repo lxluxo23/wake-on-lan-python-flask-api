@@ -24,7 +24,8 @@
       "Bash(flask db:*)",
       "Bash(kill:*)",
       "Bash(ss:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(flask setup-system:*)"
     ],
     "deny": []
   }
