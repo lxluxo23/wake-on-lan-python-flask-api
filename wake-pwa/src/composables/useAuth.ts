@@ -3,22 +3,18 @@ import { useApi } from './useApi'
 import type { LoginCredentials, User, ApiResponse } from '@/types'
 
 export function useAuth() {
-  const { apiCall, setAuthToken, setUser, clearAuth: clearAuthLocal, isAuthenticated, user } = useApi()
+  const { post, setAuthToken, setUser, clearAuth: clearAuthLocal, isAuthenticated, user } = useApi()
   const loginLoading = ref(false)
   const registerLoading = ref(false)
 
   async function login(credentials: LoginCredentials): Promise<boolean> {
     loginLoading.value = true
     try {
-      const response: ApiResponse = await apiCall('post', '/auth/login', credentials)
-      console.log('Login response:', response)
+      const response: ApiResponse = await post('/auth/login', credentials)
       
       if (response.success && response.token && response.user) {
-        console.log('Setting token:', response.token)
-        console.log('Setting user:', response.user)
         setAuthToken(response.token)
         setUser(response.user)
-        console.log('Auth state after login:', localStorage.getItem('auth_token'))
         return true
       }
       return false
@@ -32,7 +28,7 @@ export function useAuth() {
   async function register(credentials: LoginCredentials): Promise<boolean> {
     registerLoading.value = true
     try {
-      const response: ApiResponse = await apiCall('post', '/auth/register', credentials)
+      const response: ApiResponse = await post('/auth/register', credentials)
       return response.success || false
     } catch (error) {
       throw error
@@ -43,7 +39,7 @@ export function useAuth() {
 
   async function logout(): Promise<void> {
     try {
-      await apiCall('post', '/auth/logout')
+      await post('/auth/logout')
     } catch (error) {
       // Ignorar errores de logout
     } finally {

@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useAuth } from './composables/useAuth'
 import LoginForm from './components/LoginForm.vue'
 import Dashboard from './components/Dashboard.vue'
+import NotificationContainer from './components/NotificationContainer.vue'
 
 const { isAuthenticated, user } = useAuth()
 
@@ -19,5 +20,8 @@ onMounted(() => {
     
     <!-- Dashboard principal -->
     <Dashboard v-else />
+
+    <!-- Sistema de notificaciones global -->
+    <NotificationContainer />
   </div>
 </template>

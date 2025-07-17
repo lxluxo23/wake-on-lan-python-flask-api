@@ -7,9 +7,15 @@
           <h1 class="text-2xl font-bold">🖥️ Wake Remote</h1>
           
           <div class="flex items-center space-x-4">
-            <span class="text-blue-100">Hola, {{ user?.username }}</span>
+            <div class="text-blue-100">
+              <span>Hola, {{ user?.username }}</span>
+              <span v-if="user?.role" class="ml-2 px-2 py-1 bg-blue-800 rounded text-xs">
+                {{ user.role === 'admin' ? '👑 Admin' : '👤 Usuario' }}
+              </span>
+            </div>
             
             <button
+              v-if="user?.role === 'admin'"
               @click="currentView = currentView === 'add' ? 'list' : 'add'"
               class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg font-medium transition-colors"
             >
@@ -30,7 +36,7 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <EquiposList v-if="currentView === 'list'" />
-      <AddEquipo v-else @equipoAdded="currentView = 'list'" />
+      <AddEquipo v-else-if="user?.role === 'admin'" @equipoAdded="currentView = 'list'" />
     </main>
   </div>
 </template>

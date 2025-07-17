@@ -7,8 +7,11 @@
     "dev": "vite --host",
     "dev:local": "vite",
     "dev:https": "vite --host --https",
-    "build": "vite build",
-    "preview": "vite preview --host"
+    "build": "vue-tsc && vite build",
+    "build:dev": "vite build",
+    "preview": "vite preview --host",
+    "type-check": "vue-tsc --noEmit",
+    "type-check:watch": "vue-tsc --noEmit --watch"
   },
   "dependencies": {
     "axios": "^1.10.0",

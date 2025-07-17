@@ -3,13 +3,13 @@ import { useApi } from './useApi'
 import type { Equipo, CreateEquipoData, UpdateEquipoData, ApiResponse } from '@/types'
 
 export function useEquipos() {
-  const { apiCall, loading } = useApi()
+  const { get, post, put, delete: del, loading } = useApi()
   const equipos = ref<Equipo[]>([])
   const currentEquipo = ref<Equipo | null>(null)
 
   async function fetchEquipos(): Promise<void> {
     try {
-      const response: ApiResponse = await apiCall('get', '/equipos')
+      const response: ApiResponse = await get('/equipos')
       if (response.success && response.equipos) {
         equipos.value = response.equipos
       }
@@ -20,7 +20,7 @@ export function useEquipos() {
 
   async function fetchEquipo(id: number): Promise<Equipo | null> {
     try {
-      const response: ApiResponse = await apiCall('get', `/equipos/${id}`)
+      const response: ApiResponse = await get(`/equipos/${id}`)
       if (response.success && response.equipo) {
         currentEquipo.value = response.equipo
         return response.equipo
@@ -33,7 +33,7 @@ export function useEquipos() {
 
   async function createEquipo(equipoData: CreateEquipoData): Promise<boolean> {
     try {
-      const response: ApiResponse = await apiCall('post', '/equipos', equipoData)
+      const response: ApiResponse = await post('/equipos', equipoData)
       if (response.success) {
         await fetchEquipos() // Recargar lista
         return true
@@ -46,7 +46,7 @@ export function useEquipos() {
 
   async function updateEquipo(id: number, equipoData: UpdateEquipoData): Promise<boolean> {
     try {
-      const response: ApiResponse = await apiCall('put', `/equipos/${id}`, equipoData)
+      const response: ApiResponse = await put(`/equipos/${id}`, equipoData)
       if (response.success) {
         await fetchEquipos() // Recargar lista
         return true
@@ -59,7 +59,7 @@ export function useEquipos() {
 
   async function deleteEquipo(id: number): Promise<boolean> {
     try {
-      const response: ApiResponse = await apiCall('delete', `/equipos/${id}`)
+      const response: ApiResponse = await del(`/equipos/${id}`)
       if (response.success) {
         equipos.value = equipos.value.filter(eq => eq.id !== id)
         return true
@@ -72,7 +72,7 @@ export function useEquipos() {
 
   async function wakeEquipo(id: number): Promise<boolean> {
     try {
-      const response: ApiResponse = await apiCall('post', `/equipos/${id}/encender`)
+      const response: ApiResponse = await post(`/equipos/${id}/encender`)
       return response.success || false
     } catch (error) {
       throw error
@@ -81,7 +81,7 @@ export function useEquipos() {
 
   async function getEquipoStatus(id: number): Promise<Equipo | null> {
     try {
-      const response: ApiResponse = await apiCall('get', `/equipos/${id}/estado`)
+      const response: ApiResponse = await get(`/equipos/${id}/estado`)
       if (response.success && response.equipo) {
         // Actualizar el equipo en la lista
         const index = equipos.value.findIndex(eq => eq.id === id)

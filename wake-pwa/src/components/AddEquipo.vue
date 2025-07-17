@@ -7,22 +7,36 @@
         <!-- Nombre del Equipo -->
         <div>
           <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
-            Nombre del Equipo
+            📛 Nombre del Equipo
           </label>
           <input
             id="nombre"
             v-model="equipoData.nombre"
             type="text"
             required
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            placeholder="Ej: PC Oficina, Laptop Juan..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 focus:bg-white"
+            placeholder="Ej: PC-Oficina-01, Laptop-Juan, Servidor-Principal"
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-2">
+            📝 Descripción (Opcional)
+          </label>
+          <input
+            id="descripcion"
+            v-model="equipoData.descripcion"
+            type="text"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 focus:bg-white"
+            placeholder="Ej: Computadora de la oficina principal"
           />
         </div>
 
         <!-- Dirección MAC -->
         <div>
           <label for="mac" class="block text-sm font-medium text-gray-700 mb-2">
-            Dirección MAC
+            🔗 Dirección MAC
           </label>
           <input
             id="mac"
@@ -30,8 +44,7 @@
             @input="handleMacInput"
             type="text"
             required
-            pattern="([0-9A-F]{2}:){5}[0-9A-F]{2}"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors font-mono"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors font-mono bg-gray-50 focus:bg-white uppercase"
             placeholder="AA:BB:CC:DD:EE:FF"
           />
           <p class="mt-1 text-sm text-gray-500">
@@ -39,9 +52,22 @@
           </p>
         </div>
 
-        <!-- Error Message -->
-        <div v-if="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {{ errorMessage }}
+        <!-- Dirección IP -->
+        <div>
+          <label for="ip" class="block text-sm font-medium text-gray-700 mb-2">
+            🌐 Dirección IP (Opcional)
+          </label>
+          <input
+            id="ip"
+            v-model="equipoData.ip_address"
+            type="text"
+            pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors font-mono bg-gray-50 focus:bg-white"
+            placeholder="192.168.1.100"
+          />
+          <p class="mt-1 text-sm text-gray-500">
+            Formato: XXX.XXX.XXX.XXX (ayuda a identificar el equipo)
+          </p>
         </div>
 
         <!-- Submit Button -->
@@ -49,9 +75,16 @@
           <button
             type="submit"
             :disabled="loading || !isFormValid"
-            class="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            {{ loading ? 'Agregando...' : '✅ Agregar Equipo' }}
+            <span v-if="loading" class="flex items-center justify-center">
+              <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Agregando...
+            </span>
+            <span v-else>✅ Agregar Equipo</span>
           </button>
         </div>
       </form>
@@ -88,6 +121,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { useEquipos } from '@/composables/useEquipos'
+import { useNotifications } from '@/composables/useNotifications'
 import type { CreateEquipoData } from '@/types'
 
 interface Emits {
@@ -97,51 +131,75 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 const { loading, createEquipo, formatMacAddress, validateMacAddress } = useEquipos()
+const { success, error } = useNotifications()
 
 const equipoData = reactive<CreateEquipoData>({
   nombre: '',
-  mac_address: ''
+  descripcion: '',
+  mac_address: '',
+  ip_address: ''
 })
 
 const macInput = ref('')
-const errorMessage = ref('')
 
 const isFormValid = computed(() => {
-  return equipoData.nombre.trim() && 
-         equipoData.mac_address && 
-         validateMacAddress(equipoData.mac_address)
+  const hasValidName = equipoData.nombre.trim().length > 0
+  const hasValidMac = equipoData.mac_address && equipoData.mac_address.trim().length >= 12
+  const hasValidIp = !equipoData.ip_address || /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(equipoData.ip_address.trim())
+  
+  return hasValidName && hasValidMac && hasValidIp
 })
 
 const handleMacInput = (event: Event) => {
   const target = event.target as HTMLInputElement
-  const formatted = formatMacAddress(target.value)
+  // Convertir a uppercase y mantener solo caracteres válidos
+  const value = target.value.toUpperCase().replace(/[^0-9A-F:-]/g, '')
+  const formatted = formatMacAddress(value)
   macInput.value = formatted
   equipoData.mac_address = formatted
 }
 
+const resetForm = () => {
+  equipoData.nombre = ''
+  equipoData.descripcion = ''
+  equipoData.mac_address = ''
+  equipoData.ip_address = ''
+  macInput.value = ''
+}
+
 const handleSubmit = async () => {
-  errorMessage.value = ''
+  if (!isFormValid.value) {
+    error('Error de validación', 'Por favor completa todos los campos requeridos correctamente')
+    return
+  }
 
   if (!validateMacAddress(equipoData.mac_address)) {
-    errorMessage.value = 'Formato de MAC inválido. Debe ser AA:BB:CC:DD:EE:FF'
+    error('MAC inválida', 'El formato debe ser AA:BB:CC:DD:EE:FF')
     return
   }
 
   try {
-    const success = await createEquipo(equipoData)
-    if (success) {
-      alert('Equipo agregado exitosamente!')
+    const equipoToCreate = {
+      ...equipoData,
+      descripcion: equipoData.descripcion?.trim() || undefined,
+      ip_address: equipoData.ip_address?.trim() || undefined
+    }
+
+    const success_create = await createEquipo(equipoToCreate)
+    if (success_create) {
+      success(
+        'Equipo agregado',
+        `${equipoData.nombre} ha sido agregado exitosamente`
+      )
       
-      // Reset form
-      equipoData.nombre = ''
-      equipoData.mac_address = ''
-      macInput.value = ''
-      
-      // Emit event to parent
+      resetForm()
       emit('equipoAdded')
     }
-  } catch (error: any) {
-    errorMessage.value = error.message || 'Error al agregar equipo'
+  } catch (err: any) {
+    error(
+      'Error al agregar equipo',
+      err.message || 'No se pudo conectar con el servidor'
+    )
   }
 }
 </script>

@@ -1,10 +1,9 @@
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 import { ref, computed } from 'vue'
 import type { ApiResponse } from '@/types'
+import { useConfig } from './useConfig'
 
-const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://equipos.myccontadores.cl/api'
-  : 'http://localhost:5000/api'
+const { apiConfig, log, logError } = useConfig()
 
 // Estado global de autenticación
 const authToken = ref(localStorage.getItem('auth_token') || '')
@@ -20,26 +19,50 @@ const clearAuthGlobal = () => {
 
 // Cliente axios configurado
 const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
+  baseURL: apiConfig.value.baseURL,
+  timeout: apiConfig.value.timeout,
 })
 
-// Interceptor para agregar token
+// Interceptor para agregar token y logging
 apiClient.interceptors.request.use((config) => {
   if (authToken.value) {
     config.headers.Authorization = `Bearer ${authToken.value}`
   }
+  
+  log('API Request:', {
+    method: config.method?.toUpperCase(),
+    url: config.url,
+    baseURL: config.baseURL
+  })
+  
   return config
 })
 
-// Interceptor para manejar errores
+// Interceptor para manejar errores y logging
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response: AxiosResponse) => {
+    log('API Response:', {
+      status: response.status,
+      url: response.config.url,
+      data: response.data
+    })
+    return response
+  },
   (error) => {
-    if (error.response?.status === 401) {
-      clearAuthGlobal()
-      // No forzar navegación, dejar que Vue maneje la reactividad
+    const errorInfo = {
+      status: error.response?.status,
+      url: error.config?.url,
+      message: error.message,
+      data: error.response?.data
     }
+    
+    logError('API Error:', errorInfo)
+    
+    if (error.response?.status === 401) {
+      log('Token expirado, limpiando autenticación')
+      clearAuthGlobal()
+    }
+    
     return Promise.reject(error)
   }
 )
@@ -91,6 +114,12 @@ export function useApi() {
     }
   }
 
+  // Métodos HTTP específicos para facilitar el uso
+  const get = <T = any>(url: string) => apiCall<T>('get', url)
+  const post = <T = any>(url: string, data?: any) => apiCall<T>('post', url, data)
+  const put = <T = any>(url: string, data?: any) => apiCall<T>('put', url, data)
+  const del = <T = any>(url: string) => apiCall<T>('delete', url)
+
   return {
     loading: computed(() => loading.value),
     error: computed(() => error.value),
@@ -100,6 +129,11 @@ export function useApi() {
     setAuthToken,
     setUser,
     clearAuth,
-    apiCall
+    apiCall,
+    // Métodos HTTP específicos
+    get,
+    post,
+    put,
+    delete: del
   }
 }

@@ -38,7 +38,7 @@ def register():
         return jsonify({'message': 'El nombre de usuario ya está en uso'}), 409
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(username=username, password=hashed_password)
+    new_user = User(username=username, password=hashed_password, role='user')
     db.session.add(new_user)
     db.session.commit()
 

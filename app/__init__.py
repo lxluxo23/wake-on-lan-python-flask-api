@@ -20,9 +20,13 @@ def create_app(config_name='default'):
     from app.auth import auth
     from app.routes import main
     from app.api import api
+    from app import commands
     
     app.register_blueprint(auth)
     app.register_blueprint(main)
     app.register_blueprint(api)
+    
+    # Registrar comandos personalizados
+    commands.init_app(app)
     
     return app

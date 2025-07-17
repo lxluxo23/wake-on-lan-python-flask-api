@@ -7,7 +7,24 @@
       "Bash(node:*)",
       "Bash(npm:*)",
       "Bash(ls:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(timeout 10s npm run dev:local)",
+      "Bash(true)",
+      "Bash(flask db revision:*)",
+      "Bash(python -m flask db revision:*)",
+      "Bash(python3 -m flask db revision:*)",
+      "Bash(pipenv run flask db revision:*)",
+      "Bash(python3:*)",
+      "Bash(sqlite3:*)",
+      "Bash(export FLASK_APP=run.py)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(python:*)",
+      "Bash(py:*)",
+      "Bash(flask db:*)",
+      "Bash(kill:*)",
+      "Bash(ss:*)",
+      "Bash(pkill:*)"
     ],
     "deny": []
   }
