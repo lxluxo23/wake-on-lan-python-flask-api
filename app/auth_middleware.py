@@ -3,6 +3,13 @@ from flask import request, jsonify, current_app
 import jwt
 from .models import User
 
+# Importar excepciones JWT correctas
+try:
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+except ImportError:
+    # Fallback para versiones antiguas
+    from jwt import ExpiredSignatureError, InvalidTokenError
+
 def token_required(f):
     """Decorator para requerir token de autenticación"""
     @wraps(f)
@@ -28,9 +35,9 @@ def token_required(f):
             if not current_user:
                 return jsonify({'message': 'Token inválido'}), 401
                 
-        except jwt.ExpiredSignatureError:
+        except ExpiredSignatureError:
             return jsonify({'message': 'Token expirado'}), 401
-        except jwt.InvalidTokenError:
+        except InvalidTokenError:
             return jsonify({'message': 'Token inválido'}), 401
         
         return f(current_user, *args, **kwargs)

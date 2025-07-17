@@ -9,6 +9,13 @@ import jwt
 import datetime
 from flask import current_app
 
+# Importar excepciones JWT correctas
+try:
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+except ImportError:
+    # Fallback para versiones antiguas
+    from jwt import ExpiredSignatureError, InvalidTokenError
+
 api = Blueprint('api', __name__, url_prefix='/api')
 bcrypt = Bcrypt()
 
@@ -30,9 +37,9 @@ def verify_token(token):
         payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         user_id = payload['user_id']
         return User.query.get(user_id)
-    except jwt.ExpiredSignatureError:
+    except ExpiredSignatureError:
         return None
-    except jwt.InvalidTokenError:
+    except InvalidTokenError:
         return None
 
 def api_auth_required(f):
