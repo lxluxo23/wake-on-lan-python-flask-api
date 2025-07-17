@@ -10,3 +10,105 @@
 2025-07-15 21:27:41 - waitress - INFO - Serving on http://0.0.0.0:90
 2025-07-16 23:06:47 - WakeOnLanService - INFO - Deteniendo servicio Wake-on-LAN...
 2025-07-16 23:06:47 - WakeOnLanService - INFO - Servicio Wake-on-LAN detenido
+2025-07-17 12:56:16 - WakeOnLanService - INFO - Iniciando servicio Wake-on-LAN...
+2025-07-17 12:56:17 - WakeOnLanService - INFO - Servidor iniciando en puerto 90...
+2025-07-17 12:56:17 - WakeOnLanService - INFO - Servicio Wake-on-LAN iniciado correctamente
+2025-07-17 12:56:17 - waitress - INFO - Serving on http://0.0.0.0:90
+2025-07-17 12:59:41 - waitress - ERROR - Exception while serving /api/equipos
+Traceback (most recent call last):
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 30, in verify_token
+    payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+              ^^^^^^^^^^
+AttributeError: module 'jwt' has no attribute 'decode'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\channel.py", line 428, in service
+    task.service()
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\task.py", line 168, in service
+    self.execute()
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\task.py", line 434, in execute
+    app_iter = self.channel.server.application(environ, start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2213, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2193, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 47, in decorated_function
+    current_user = verify_token(token)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 33, in verify_token
+    except jwt.ExpiredSignatureError:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jwt' has no attribute 'ExpiredSignatureError'
+2025-07-17 12:59:43 - waitress - ERROR - Exception while serving /api/auth/logout
+Traceback (most recent call last):
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 30, in verify_token
+    payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+              ^^^^^^^^^^
+AttributeError: module 'jwt' has no attribute 'decode'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\channel.py", line 428, in service
+    task.service()
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\task.py", line 168, in service
+    self.execute()
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\waitress\task.py", line 434, in execute
+    app_iter = self.channel.server.application(environ, start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2213, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2193, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 47, in decorated_function
+    current_user = verify_token(token)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Servidor\Desktop\servidores\wake-on-lan-python-flask-api\app\api.py", line 33, in verify_token
+    except jwt.ExpiredSignatureError:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jwt' has no attribute 'ExpiredSignatureError'
+2025-07-17 13:00:30 - WakeOnLanService - INFO - Deteniendo servicio Wake-on-LAN...
+2025-07-17 13:00:30 - WakeOnLanService - INFO - Servicio Wake-on-LAN detenido
